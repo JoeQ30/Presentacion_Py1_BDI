@@ -22,8 +22,26 @@ export class EmpleadosService {
     return this.httpClient.get<EmpleadosModel[]>('http://localhost:9000/api/vacaciones'+'/listn?nombre='+ nm).pipe(map(res => res));
   }
 
-  insertEmpelados(request: any): Observable<any>{
+  listmovi(id: number): Observable<any>{
+    return this.httpClient.get<EmpleadosModel[]>('http://localhost:9000/api/vacaciones'+'/listm/'+ id).pipe(map(res => res));
+  }
+
+  insertEmpleados(request: any): Observable<any>{
     return this.httpClient.post<any>('http://localhost:9000/api/vacaciones'+'/insert',request).pipe(map(res => res));
+  }
+
+  deleteEmpleados(id: number): Observable<any>{
+    return this.httpClient.get<any>('http://localhost:9000/api/vacaciones'+'/delete/' + id).pipe(map(res => res));
+  }
+
+  modEmpleados(id: number, nombre: string, puesto: string, nuevaId: number): Observable<any>{
+    const request: any = null;
+    return this.httpClient.put<any>('http://localhost:9000/api/vacaciones'+'/mod/'+ nuevaId + "/" + nombre + "/" + puesto + "/" + id, request).pipe(map(res => res));
+  }
+
+  insertMovimientos(id: number, tipoMovi: string, monto: number): Observable<any>{
+    const request: any = null;
+    return this.httpClient.put<any>('http://localhost:9000/api/vacaciones'+'/insertm/'+id + "/" +tipoMovi + "/" + monto, request).pipe(map(res => res));
   }
 
 }

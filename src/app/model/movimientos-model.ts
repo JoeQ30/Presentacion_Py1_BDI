@@ -3,6 +3,6 @@ export class MovimientosModel{
     "movimiento": string = '';
     "fecha": Date = new Date();
     "monto": number = 0;
-    "muevoMonto": number = 0;
+    "nuevoMonto": number = 0;
 
 }

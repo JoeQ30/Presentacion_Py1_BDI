@@ -5,6 +5,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { RedireccionesService } from '../../service/redirecciones.service';
 import { EmpleadosService } from '../../service/empleados.service';
 import { EmpleadosModel } from '../../model/empleados-model';
+import { MovimientosModel } from '../../model/movimientos-model';
 
 @Component({
   selector: 'app-empleados',
@@ -16,13 +17,19 @@ import { EmpleadosModel } from '../../model/empleados-model';
 export class EmpleadosComponent implements OnInit{
 
   listEmpleados: EmpleadosModel [] = [];
+  listMovimientos: MovimientosModel [] = [];
 
   repetido = 0;
   puesto = "";
+  id = 0;
+  nId = 0;
+  nomb = "";
+  tipoMovimiento = "";
 
 
   formBuscar: FormGroup = new FormGroup({});
   formEmpleados: FormGroup = new FormGroup({});
+  formMovimientos: FormGroup = new FormGroup({});
   constructor(private empleadosService: EmpleadosService, private redirecciones: RedireccionesService){}
 
   ngOnInit(): void{
@@ -38,6 +45,12 @@ export class EmpleadosComponent implements OnInit{
       status : new FormControl('1')
     });
 
+    this.formMovimientos = new FormGroup({
+      tipomovimiento : new FormControl ('', [Validators.required]),
+      monto : new FormControl('' , [Validators.required, Validators.pattern(/^\d+$/)]),
+      status : new FormControl('1')
+    });
+
   }
 
   insert(){
@@ -47,10 +60,9 @@ export class EmpleadosComponent implements OnInit{
 
       if (this.formEmpleados.get('nombre')?.value !== null || this.formEmpleados.get('nombre')?.value !== ''){
 
-        this.empleadosService.insertEmpelados(this.formEmpleados.value).subscribe(resp=>{
-          console.log(resp);
+        this.empleadosService.insertEmpleados(this.formEmpleados.value).subscribe(resp=>{
+          
           if(resp.message === "1"){
-            console.log(resp);
             this.repetido = 0;
             this.listN("");
             this.formEmpleados.reset();
@@ -65,6 +77,54 @@ export class EmpleadosComponent implements OnInit{
       }
 
       
+
+  }
+
+  modEmpleado(){
+
+    console.log(this.id);
+    console.log(this.nId);
+    console.log(this.puesto);
+    console.log(this.nomb);
+    
+
+    this.empleadosService.modEmpleados(this.id, this.nomb, this.puesto, this.nId).subscribe(resp=>{
+
+      if(resp.message == 1){
+
+        this.repetido = 0;
+        this.formEmpleados.reset();
+        this.listN("");
+
+      }
+      if(resp.message == 2){
+        this.repetido = 1;
+      }
+      if(resp.message == 3){
+        this.repetido = 1;
+      }
+    });
+
+  }
+
+  deleteEmpleado(id: number){
+    this.empleadosService.deleteEmpleados(id).subscribe(resp=>{
+      if(resp.message == 1){
+        this.listN("");
+      }
+    });
+  }
+
+  insertarMovi(){
+
+    const monto = this.formMovimientos.get('monto')?.value;
+
+    this.empleadosService.insertMovimientos(this.id, this.tipoMovimiento, monto).subscribe(resp=>{
+      if(resp.message === "1"){
+        this.formMovimientos.reset();
+      }
+        
+    })
 
   }
 
@@ -97,7 +157,29 @@ export class EmpleadosComponent implements OnInit{
     });
   }
 
+  listMovi(){
+
+    this.empleadosService.listmovi(this.id).subscribe(resp=>{
+      if(resp){
+        this.listMovimientos = resp;
+      }
+    });
+  }
+
+  asignarId(id: number){
+    this.id = id;
+  }
+
+  asignarNid(id: number){
+    this.nId = id;
+  }
+
+  asignarNomb(nm: string){
+    this.nomb = nm;
+  }
+
   asignar(nPuesto: string){
+    this.puesto = nPuesto;
 
     this.formEmpleados.patchValue({
       puesto: nPuesto
@@ -105,9 +187,24 @@ export class EmpleadosComponent implements OnInit{
 
   }
 
+  asignarMovi(nMovi: string){
+
+    this.tipoMovimiento = nMovi;
+
+    this.formMovimientos.patchValue({
+      tipomovimiento : nMovi
+    });
+
+  }
+
   close(){
     this.formEmpleados.reset();
     this.repetido = 0;
+  }
+
+  closeMov(){
+    this.formMovimientos.reset();
+    this.listMovimientos = [];
   }
 
   logout(){
