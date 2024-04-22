@@ -1,5 +1,5 @@
 {
-  "name": "proyecto1-angular",
+  "name": "proyecto1-bdi",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:Proyecto1Angular": "node dist/proyecto1-angular/server/server.mjs"
+    "serve:ssr:proyecto1BDI": "node dist/proyecto1-bdi/server/server.mjs"
   },
   "private": true,
   "dependencies": {

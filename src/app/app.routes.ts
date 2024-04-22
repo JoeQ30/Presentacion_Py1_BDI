@@ -6,5 +6,8 @@ import { MovimientosComponent } from './components/movimientos/movimientos.compo
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'empleados', component: EmpleadosComponent },
-    { path: 'movimientos', component: MovimientosComponent }
+    { path: 'movimientos', component: MovimientosComponent },
+
+    {path: '', redirectTo: '/login', pathMatch: 'full'},
+
 ];

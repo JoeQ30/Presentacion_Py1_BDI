@@ -1,2 +1,33 @@
-<p>login works!</p>
-<button type="button" class="btn btn-primary btn-sm" routerLink="/empleados"> Nuevo Empleado</button>
+<nav class="navbar" style="background-color: #7095F9;"><!--Esto es el encabezado-->
+    <div class="container-fluid">
+      <div class="col-md-5">
+          <h1 style="color: white;">Sistema de control de vacaciones</h1>
+        </div>
+    </div> 
+</nav>
+
+<div class="d-flex justify-content-center">
+    <form [formGroup]="formUsuarios">
+        <div class="mb-3">
+            <label for="usuario" class="form-label">Username</label>
+            <input type="text" class="form-control" formControlName="username">
+            <div *ngIf="formUsuarios.get('username')?.errors?.['required'] && incorrecto1 === 0" class="text-danger">
+                El nombre es requerido.
+            </div>
+            <div *ngIf="incorrecto1 === 1" class="text-danger">
+                El nombre es incorrecto.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="contraseña" class="form-label">Password</label>
+            <input type="password" class="form-control" formControlName="password">
+            <div *ngIf="formUsuarios.get('password')?.errors?.['required'] && incorrecto2 === 0" class="text-danger">
+                La contraseña es requerida.
+            </div>
+            <div *ngIf="incorrecto2 === 1" class="text-danger">
+                La contraseña es incorrecta.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="login()"> Login</button>
+    </form>
+</div>

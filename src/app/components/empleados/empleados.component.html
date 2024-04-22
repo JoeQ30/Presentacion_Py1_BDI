@@ -1,1 +1,126 @@
-<p>empleados works!</p>
+<nav class="navbar" style="background-color: #7095F9;"><!--Esto es el encabezado-->
+    <div class="container-fluid">
+        <div class="col-md-3">
+          <h1 style="color: white;">Sistema de control de vacaciones</h1>
+        </div>
+        <div class="col-md-3">
+            <form [formGroup]="formBuscar" class="d-flex">
+                <input class="form-control me-2" type="text" placeholder="Buscar..." formControlName="buscar">
+                <button class="btn btn-light" type="button" (click)="buscar()">Buscar</button>
+            </form>    
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-danger btn-sm" (click)="logout()"> Logout</button>
+        </div>
+    </div> 
+</nav>
+
+<div class="col-md-12 p-2">
+    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#agregarEmpleado"><i ></i> Nuevo Empleado</button>
+    <table class="table mt-2 table-bordered">
+        <thead class="table-primary">
+          <tr>
+            <th>Identidad</th>
+            <th>Nombre</th>
+            <th>Puesto</th>
+            <th>Fecha de Contratacion</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of listEmpleados">
+                <td>{{item.identidad}}</td>
+                <td>{{item.nombre}}</td>
+                <td>{{item.puesto}}</td>
+                <td>{{item.fechaContratacion}}</td>
+               
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm"  data-bs-toggle="modal">Editar</button>
+                    &nbsp;
+                    <button type="button" class="btn btn-danger btn-sm">Borrar</button>
+                    &nbsp;
+                    <button type="button" class="btn btn-success btn-sm">Movimientos</button>
+                </td>
+              </tr> 
+         
+        </tbody>
+      </table>
+</div>
+
+<!--Ventanas emergentes o modals-->
+<div class="modal" id="agregarEmpleado" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Agregar Empleado(a)</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="close()"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="formEmpleados">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Nombre</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" formControlName="nombre">
+                      <div *ngIf="formEmpleados.get('nombre')?.errors?.['required']" class="text-danger">
+                        El nombre es requerido.
+                      </div>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Seleccionar puesto
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" (click)="asignar('Cajero')">Cajero</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Camarero')" >Camarero</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Cuidador')">Cuidador</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Conductor')">Conductor</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Asistente')">Asistente</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Recepcionista')">Recepcionista</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Fontanero')">Fontanero</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Niñera')">Niñera</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Conserje')">Conserje</a></li>
+                      <li><a class="dropdown-item" (click)="asignar('Albañil')">Albañil</a></li>
+                    </ul>
+
+                    <div class="mb-3 row"></div>
+
+                    <input class="form-control" formControlName="puesto" type="text">
+                    
+
+                </div>
+
+                <div class="mb-3 row"></div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Identidad</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" formControlName="identidad">
+                      <div *ngIf="formEmpleados.get('identidad')?.errors?.['required']" class="text-danger">
+                        La identidad es requerida.
+                      </div>
+                      <div *ngIf="formEmpleados.get('identidad')?.errors?.['pattern']" class="text-danger">
+                        La Identidad debe ser un numero entero.
+                      </div>
+                      <div *ngIf="repetido === 1 " class="text-danger">
+                        Nombre o Identidad estan repetidos
+                      </div>
+                    </div>
+                </div>
+              </form>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="close()" data-bs-dismiss="modal">Regresar</button>
+          <button type="button" class="btn btn-primary" (click)="insert()">Insertar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
